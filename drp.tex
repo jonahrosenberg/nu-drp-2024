@@ -1,0 +1,143 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+\title{Numbered Increasing $(1,2)$-Trees and the Euler Zigzag Numbers}
+\author{Directed Reading Program, Northwestern University\\[2pt]
+\small In collaboration with Noah Wisdom (graduate mentor)}
+\date{Spring 2024}
+
+\begin{document}
+\maketitle
+
+\section*{Some background}
+
+The \emph{Euler numbers}, or \emph{Euler zigzag numbers}, are the sequence
+\[
+A_n = 1,\ 1,\ 1,\ 2,\ 5,\ 16,\ 61,\ 272,\ \dots
+\]
+They satisfy the recurrence
+\[
+2A_{n+1} \;=\; \sum_{k=0}^{n} \binom{n}{k} A_k\, A_{n-k}.
+\]
+This comes up a lot in combinatorics.
+
+\bigskip
+
+The objects we will count are the following.
+
+\begin{definition}[Numbered increasing $(1,2)$-trees]
+A \emph{numbered increasing $(1,2)$-tree} is an increasing rooted tree such that
+every non-endpoint vertex has one or two children. Two trees on the same number
+of vertices are considered the same (isomorphic) if one can be reoriented so as
+to recover the other. The trees are numbered (labeled $1, 2, \dots, n$) such that
+the labels strictly increase along every path from the root to a leaf.
+\end{definition}
+
+The notes illustrate this with two small examples: a pair of trees that are
+considered the same, since one can be rearranged to match the other, and a pair
+of trees that are distinct, since no such rearrangement exists.
+
+\bigskip
+
+We write
+\[
+f(n) = \text{the number of distinct numbered increasing $(1,2)$-trees on $n$ vertices.}
+\]
+
+\begin{lemma}\label{lem:egf}
+\[
+\sum_{n \ge 0} E_n\, \frac{x^n}{n!} \;=\; \sec x + \tan x .
+\]
+\end{lemma}
+
+\section*{Main result}
+
+\begin{proposition}
+For each $n$, $\; f(n) = E_n.$
+\end{proposition}
+
+Before the proof, we check the first few values directly:
+\[
+f(1) = 1, \qquad f(2) = 1, \qquad f(3) = 2, \qquad f(4) = 5,
+\]
+which agree with $E_1, E_2, E_3, E_4$.
+
+\begin{proof}
+Let
+\[
+y \;=\; \sum_{n \ge 1} f(n)\, \frac{x^n}{n!}
+   \;=\; x + \frac{x^2}{2!} + 2\,\frac{x^3}{3!} + \cdots .
+\]
+Taking the derivative with respect to $x$ and reindexing,
+\[
+y' \;=\; \sum_{n \ge 1} f(n)\, \frac{n\,x^{\,n-1}}{n!}
+   \;=\; \sum_{n \ge 0} f(n+1)\, \frac{x^n}{n!}.
+\]
+So $y'$ is the exponential generating function counting numbered increasing
+$(1,2)$-trees on $n+1$ vertices. We split such a tree into cases according to
+the structure at the root:
+\begin{enumerate}[label=(\alph*)]
+  \item a single vertex $(n = 0)$;
+  \item the tree has one subtree of the root, which is an increasing
+        $(1,2)$-tree with $n$ vertices;
+  \item the tree has two subtrees of the root, each of which is an increasing
+        $(1,2)$-tree, with $n$ vertices in all.
+\end{enumerate}
+From these cases we obtain
+\[
+y' \;=\; 1 + y + \tfrac{1}{2} y^2 .
+\]
+(This checks out if you compute it, but we will not carry out that computation
+here.)
+
+\medskip
+
+This differential equation has the solution
+\[
+y \;=\; \sec x + \tan x - 1 .
+\]
+To see why, compute the derivative
+\[
+y' \;=\; \sec x \tan x + \sec^2 x ,
+\]
+and substitute $y$ into the right-hand side of the equation:
+\begin{align*}
+1 + y + \tfrac{1}{2} y^2
+ &= 1 + \bigl(\sec x + \tan x - 1\bigr)
+      + \tfrac{1}{2}\bigl(\sec x + \tan x - 1\bigr)^2 \\[2pt]
+ &= \bigl(\sec x + \tan x\bigr)
+      + \tfrac{1}{2}\bigl(\sec^2 x + \tan^2 x + 1
+        + 2\sec x \tan x - 2\sec x - 2\tan x\bigr) \\[2pt]
+ &= \sec x \tan x + \tfrac{1}{2}\bigl(\sec^2 x + \tan^2 x + 1\bigr) \\[2pt]
+ &= \sec x \tan x + \tfrac{1}{2}\bigl(\sec^2 x + \sec^2 x\bigr) \\[2pt]
+ &= \sec x \tan x + \sec^2 x \\[2pt]
+ &= y',
+\end{align*}
+where we used $\tan^2 x + 1 = \sec^2 x$. This is exactly what we wanted.
+
+\medskip
+
+Therefore
+\[
+y \;=\; \sum_{n \ge 1} E_n\, \frac{x^n}{n!},
+\]
+which is the generating function of Lemma~\ref{lem:egf} with its constant term
+removed. Matching coefficients gives
+\[
+f(n) = E_n \qquad (\text{starting from } E_1). \qedhere
+\]
+\end{proof}
+
+\end{document}
